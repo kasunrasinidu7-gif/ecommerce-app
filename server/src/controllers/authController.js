@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 
 export const loginUser = async (req, res) => {
@@ -25,9 +26,19 @@ export const loginUser = async (req, res) => {
             });
 
         }
+        const token = jwt.sign({
+            userId: user._id,
+            role: user.role
+        }, process.env.JWT_SECRET, { 
+            expiresIn: process.env.JWT_EXPIRES_IN
+        });
+
+        console.log(token);
+
         return res.status(200).json({
             success: true,
             message: 'Login successful',
+            token
         });
     }
 
