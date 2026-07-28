@@ -6,7 +6,7 @@ export const registerUser = async (req, res) => {
         console.log(req.body);
 
 
-        const { name, email, password } = req.body;
+        const { name, email, password,role } = req.body;
 
         const existingUser = await User.findOne({ email });
 
@@ -26,7 +26,8 @@ export const registerUser = async (req, res) => {
         const user = await User.create({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            ...(role && { role })
         });
 
 
